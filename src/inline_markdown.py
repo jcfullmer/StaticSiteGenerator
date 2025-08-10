@@ -76,7 +76,7 @@ def split_nodes_link(old_nodes):
             if len(sections) != 2:
                 raise ValueError("invalid markdown, link section not closed")
             if sections[0] == "":
-                split_nodes.append(TextNode(links[0], TextType.LINK, link[1]))
+                split_nodes.append(TextNode(link[0], TextType.LINK, link[1]))
                 original_text = sections[1]
                 continue
             if sections[0] != "":

@@ -3,11 +3,12 @@ from enum import Enum
 
 
 def markdown_to_blocks(markdown):
+    blocks = markdown.split("\n\n")
     split_markdown = []
-    for i in markdown.split("\n\n"):
-        i = i.strip()
+    for i in blocks:
         if i == "":
             continue
+        i = i.strip()
         split_markdown.append(i)
     return split_markdown
 
@@ -21,36 +22,26 @@ class BlockType(Enum):
     ORDERED_LIST = "ordered_list"
 
 def block_to_block_type(text):
+    lines = text.split("\n") 
     if text.startswith(("# ", "## ", "### ", "#### ", "##### ", "###### ")):
         return BlockType.HEADING
-    elif text.startswith("```") and text.endswith("```"):
+    if len(lines) > 1 and lines[0].startswith("```") and lines[-1].endswith("```"):
         return BlockType.CODE
-    starts = True
-    for line in text.splitlines():
-        if not line.startswith(">"):
-            starts = False
-    if starts == True:
+    if text.startswith(">"):
+        for line in lines:
+            if not line.startswith(">"):
+                return BlockType.PARAGRAPH
         return BlockType.QUOTE
-    starts = True
-    for line in text.splitlines():
-        if line.startswith("- "):
-            continue
-        else:
-            starts = False
-    if starts == True:
+    if text.startswith("- "):
+        for line in lines:
+            if not line.startswith("- "):
+                return BlockType.PARAGRAPH
         return BlockType.UNORDERED_LIST
-    starts = True
-    num = 0
-    for line in text.splitlines():
-        num += 1
-        if line.startswith(f"{num}. "):
-            continue
-        else:
-            starts = False
-        num += 1
-    if starts == True:
+    if text.startswith("1. "):
+        i = 1
+        for line in lines:
+            if not line.startswith(f"{i}. "):
+                return BlockType.PARAGRAPH
+            i += 1
         return BlockType.ORDERED_LIST
     return BlockType.PARAGRAPH
-    
-
-
