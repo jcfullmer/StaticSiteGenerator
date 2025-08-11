@@ -2,13 +2,13 @@ import os
 import shutil
 
 
-WORKING_PATH = "/home/claye/workspace/github.com/jcfullmer/StaticSiteGenerator"
+ROOT_PATH = "/home/jc/Documents/workspace/bootdev/StaticSiteGenerator/"
 
 def cp_source_to_dest(source_dir, dest_dir):
-    abssource_dir = os.path.join(WORKING_PATH, source_dir)
-    absdest_dir = os.path.join(WORKING_PATH, dest_dir)
+    abssource_dir = os.path.join(ROOT_PATH, source_dir)
+    absdest_dir = os.path.join(ROOT_PATH, dest_dir)
     if not os.path.exists(absdest_dir):
-        raise ValueError("The Destination Directory Does Not Exist.")
+        os.mkdir(os.path.dirname(absdest_dir))
     if not os.path.exists(abssource_dir):
         raise ValueError("The source path does not exist")
     print("getting contents")
